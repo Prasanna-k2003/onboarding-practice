@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Forms</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>User Registration Form</h1>
+</header>
+
+<nav>
+    <a href="../1- Hello Web/index.html">Home</a> |
+    <a href="../1- Hello Web/about.html">About</a> |
+    <a href="#">Contact</a>
+</nav>
+
+<main>
+
+<form action="#" method="post">
+
+    <fieldset>
+        <legend>Account Credentials</legend>
+
+        <p>
+            <label for="username">Username:</label><br>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                pattern="[A-Za-z0-9]{5,15}">
+        </p>
+
+        <p>
+            <label for="email">Email Address:</label><br>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                required>
+        </p>
+
+        <p>
+            <label for="password">Password:</label><br>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                minlength="8">
+        </p>
+
+    </fieldset>
+
+    <fieldset>
+
+        <legend>Personal Profile</legend>
+
+        <p>
+            <label for="age">Age:</label><br>
+            <input
+                type="number"
+                id="age"
+                name="age"
+                min="18"
+                max="60"
+                required>
+        </p>
+
+        <p>
+            <label for="dob">Date of Birth:</label><br>
+            <input
+                type="date"
+                id="dob"
+                name="dob"
+                min="1965-01-01"
+                max="2008-12-31"
+                required>
+        </p>
+
+        <p>
+            Preferred Contact Method:
+        </p>
+
+        <input
+            type="radio"
+            id="contact-email"
+            name="contact"
+            value="Email"
+            required>
+        <label for="contact-email">Email</label>
+
+        <input
+            type="radio"
+            id="contact-phone"
+            name="contact"
+            value="Phone">
+        <label for="contact-phone">Phone</label>
+
+        <p>
+            <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                required>
+
+            <label for="terms">
+                I agree to the Terms and Conditions
+            </label>
+        </p>
+
+        <p>
+            <label for="country">Country:</label><br>
+
+            <select
+                id="country"
+                name="country"
+                required>
+
+                <option value="">--Select Country--</option>
+                <option>India</option>
+                <option>USA</option>
+                <option>Canada</option>
+                <option>Australia</option>
+
+            </select>
+        </p>
+
+        <p>
+            <label for="bio">Tell us about yourself:</label><br>
+
+            <textarea
+                id="bio"
+                name="bio"
+                rows="5"
+                cols="40"
+                required></textarea>
+        </p>
+
+    </fieldset>
+
+    <button type="submit">
+        Register
+    </button>
+
+</form>
+
+</main>
+
+</body>
+</html>

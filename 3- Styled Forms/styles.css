@@ -1,0 +1,159 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 30px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+nav {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #0066cc;
+    margin: 0 10px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    background: #ffffff;
+    padding: 25px;
+    width: 100%;
+    max-width: 700px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+legend {
+    font-weight: bold;
+    padding: 0 8px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+/* Grid Layout */
+fieldset {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 15px;
+    align-items: center;
+}
+
+fieldset p,
+fieldset input[type="radio"],
+fieldset input[type="checkbox"],
+fieldset label[for="contact-email"],
+fieldset label[for="contact-phone"] {
+    grid-column: 1 / -1;
+}
+
+label {
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+/* Hover */
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: #0077cc;
+}
+
+button:hover {
+    background-color: #0056b3;
+    cursor: pointer;
+}
+
+/* Focus */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 3px solid #4da3ff;
+    outline-offset: 2px;
+    border-color: #0066cc;
+}
+
+/* Validation */
+input:required:valid,
+select:required:valid,
+textarea:required:valid {
+    border-color: green;
+}
+
+input:required:invalid:not(:placeholder-shown),
+select:required:invalid,
+textarea:required:invalid {
+    border-color: red;
+}
+
+/* Button */
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    body {
+        padding: 15px;
+    }
+
+    fieldset {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+        width: 100%;
+    }
+}
