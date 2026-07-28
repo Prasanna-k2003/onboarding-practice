@@ -1,28 +1,43 @@
 const display = document.getElementById("display");
-
-const numberButtons = document.querySelectorAll(".number");
-const operatorButtons = document.querySelectorAll(".operator");
-const decimalButton = document.querySelector(".decimal");
-const clearButton = document.querySelector(".clear");
-const equalsButton = document.querySelector(".equals");
+const expression = document.getElementById("expression");
 
 let currentNumber = "";
 let previousNumber = "";
 let operator = "";
+let shouldResetDisplay = false;
 
 
-numberButtons.forEach(button => {
+function updateDisplay() {
+    display.value = currentNumber || "0";
 
+    if (previousNumber !== "" && operator !== "") {
+        expression.textContent = previousNumber + " " + operator;
+    } else {
+        expression.textContent = "";
+    }
+}
+
+
+document.querySelectorAll(".number").forEach(button => {
     button.addEventListener("click", () => {
 
+        if (shouldResetDisplay) {
+            currentNumber = "";
+            shouldResetDisplay = false;
+        }
+
         currentNumber += button.textContent;
-        display.value = currentNumber;
-
+        updateDisplay();
     });
-
 });
 
-decimalButton.addEventListener("click", () => {
+
+document.querySelector(".decimal").addEventListener("click", () => {
+
+    if (shouldResetDisplay) {
+        currentNumber = "0";
+        shouldResetDisplay = false;
+    }
 
     if (!currentNumber.includes(".")) {
 
@@ -31,117 +46,196 @@ decimalButton.addEventListener("click", () => {
         }
 
         currentNumber += ".";
-        display.value = currentNumber;
-
     }
 
+    updateDisplay();
 });
 
 
-clearButton.addEventListener("click", () => {
-
-    currentNumber = "";
-    previousNumber = "";
-    operator = "";
-
-    display.value = "";
-
-});
-
-function calculate() {
-
-    let num1 = parseFloat(previousNumber);
-    let num2 = parseFloat(currentNumber);
-
-    switch (operator) {
-
-        case "+":
-            return num1 + num2;
-
-        case "-":
-            return num1 - num2;
-
-        case "*":
-            return num1 * num2;
-
-        case "/":
-
-            if (num2 === 0) {
-                return "Cannot divide by 0";
-            }
-
-            return num1 / num2;
-
-        default:
-            return num2;
-    }
-
-}
-
-
-operatorButtons.forEach(button => {
+document.querySelectorAll(".operator").forEach(button => {
 
     button.addEventListener("click", () => {
 
-        if (currentNumber === "") {
+        const selectedOperator = button.textContent;
+
+        
+        if (currentNumber === "" && previousNumber === "" && selectedOperator === "-") {
+            currentNumber = "-";
+            updateDisplay();
             return;
         }
 
-        if (previousNumber !== "") {
-
-            let result = calculate();
-
-            if (result === "Cannot divide by 0") {
-
-                display.value = result;
-
-                currentNumber = "";
-                previousNumber = "";
-                operator = "";
-
-                return;
-            }
-
-            previousNumber = result.toString();
-            display.value = previousNumber;
-
-        } else {
-
-            previousNumber = currentNumber;
-
+       
+        if (previousNumber !== "" && currentNumber === "") {
+            operator = selectedOperator;
+            updateDisplay();
+            return;
         }
 
-        operator = button.textContent;
+        if (currentNumber === "") return;
+
+        if (previousNumber !== "") {
+            calculate();
+        }
+
+        previousNumber = currentNumber;
+        operator = selectedOperator;
         currentNumber = "";
+        shouldResetDisplay = false;
+
+        updateDisplay();
 
     });
 
 });
 
 
-equalsButton.addEventListener("click", () => {
+document.querySelector(".equals").addEventListener("click", () => {
 
-    if (previousNumber === "" || currentNumber === "") {
+    if (
+        previousNumber === "" ||
+        currentNumber === "" ||
+        operator === ""
+    ) {
         return;
     }
 
-    let result = calculate();
+    expression.textContent =
+        previousNumber + " " + operator + " " + currentNumber;
 
-    if (result === "Cannot divide by 0") {
+    calculate();
 
-        display.value = result;
+});
 
-        currentNumber = "";
-        previousNumber = "";
-        operator = "";
 
-        return;
+document.querySelector(".clear").addEventListener("click", () => {
+
+    currentNumber = "";
+    previousNumber = "";
+    operator = "";
+    shouldResetDisplay = false;
+
+    expression.textContent = "";
+    display.value = "0";
+
+});
+
+
+function calculate() {
+
+    let prev = parseFloat(previousNumber);
+    let curr = parseFloat(currentNumber);
+
+    let result;
+
+    switch (operator) {
+
+        case "+":
+            result = prev + curr;
+            break;
+
+        case "-":
+            result = prev - curr;
+            break;
+
+        case "*":
+            result = prev * curr;
+            break;
+
+        case "/":
+
+            if (curr === 0) {
+
+                display.value = "Cannot divide by zero";
+
+                currentNumber = "";
+                previousNumber = "";
+                operator = "";
+                expression.textContent = "";
+
+                return;
+            }
+
+            result = prev / curr;
+            break;
+
+        default:
+            return;
+
     }
 
-    display.value = result;
+    
+    result = Number(result.toFixed(10));
 
     currentNumber = result.toString();
     previousNumber = "";
     operator = "";
 
+    shouldResetDisplay = true;
+
+    display.value = currentNumber;
+
+}
+
+document.addEventListener("keydown", (event) => {
+
+    const key = event.key;
+
+    if (!isNaN(key)) {
+
+        document.querySelectorAll(".number").forEach(button => {
+
+            if (button.textContent === key) {
+                button.click();
+            }
+
+        });
+
+    }
+
+    else if (key === ".") {
+        document.querySelector(".decimal").click();
+    }
+
+    else if (["+", "-", "*", "/"].includes(key)) {
+
+        document.querySelectorAll(".operator").forEach(button => {
+
+            if (button.textContent === key) {
+                button.click();
+            }
+
+        });
+
+    }
+
+    else if (key === "Enter") {
+
+        event.preventDefault();
+
+        document.querySelector(".equals").click();
+
+    }
+
+    else if (key === "Escape") {
+
+        document.querySelector(".clear").click();
+
+    }
+
+    else if (key === "Backspace") {
+
+        if (!shouldResetDisplay) {
+
+            currentNumber = currentNumber.slice(0, -1);
+
+            updateDisplay();
+
+        }
+
+    }
+
 });
+
+
+updateDisplay();
