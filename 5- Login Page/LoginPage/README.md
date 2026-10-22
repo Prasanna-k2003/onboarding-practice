@@ -1,90 +1,144 @@
-\# ASP.NET Web Forms Login Page
+# Task 5 – Login Page (ASP.NET Web Forms)
 
+## Overview
 
+This project demonstrates a simple login page using ASP.NET Web Forms with client-side and server-side validation.
 
-\## Prerequisites
+The application accepts a username and password, validates the input, checks the demo credentials, and displays appropriate success or error messages.
 
+### Dummy Credentials
 
+- **Username:** `admin`
+- **Password:** `Password123`
 
-\- Visual Studio 2022
+> These credentials are hardcoded for learning purposes only and must not be used in a production application.
 
-\- .NET Framework 4.8
+---
 
-\- IIS Manager
+## IIS Setup
 
+1. Open **IIS Manager**.
+2. Right-click **Sites**.
+3. Select **Add Website**.
+4. Enter the following details:
 
+   **Site Name:**
+   ```
+   LoginPage
+   ```
 
-\## IIS Setup
+   **Physical Path:**
+   ```
+   Select the 5- Login Page project folder.
+   ```
 
+   **Port:**
+   ```
+   8085 (or any available port)
+   ```
 
+5. Click **OK**.
+6. Start the website if it is not already running.
+7. Open the website using the configured localhost port.
 
-1\. Open IIS Manager.
+---
 
-2\. Right-click \*\*Sites\*\* and select \*\*Add Website\*\*.
+## Application Pool
 
-3\. Enter a site name.
+Use the following application pool settings:
 
-4\. Select the project folder as the \*\*Physical Path\*\*.
+```
+.NET CLR Version: v4.0
+Managed Pipeline Mode: Integrated
+```
 
-5\. Choose an available port (for example, 8080).
+**Target Framework:**
 
-6\. Click \*\*OK\*\*.
+```
+.NET Framework 4.8
+```
 
-7\. Browse the website to run the application.
+---
 
+## Folder Permissions
 
+Grant the required read and execute permissions to the application folder:
 
-\## Application Pool
+- `IIS_IUSRS`
+- `IUSR`, if required by the configured IIS access model
 
+Additional permissions should be granted only when necessary. If future features require writing files, grant the appropriate write or modify permissions to the specific folder that needs them.
 
+---
 
-Use the following Application Pool settings:
+## Validation
 
+This application implements the following validation features:
 
+- ASP.NET `RequiredFieldValidator` controls for the username and password fields.
+- Server-side input validation in C#.
+- Trims leading and trailing whitespace from the username.
+- Checks for empty or whitespace-only username and password values.
+- Validates the supplied demo credentials.
+- Displays appropriate success and failure messages.
 
-\- .NET CLR Version: \*\*v4.0\*\*
+Client-side validation improves the user experience, while server-side validation independently checks the submitted input.
 
-\- Managed Pipeline Mode: \*\*Integrated\*\*
+---
 
+## Login Feedback
 
+**Successful login:**
 
-\## Folder Permissions
+```
+Login Successful
+```
 
+**Missing username or password:**
 
+```
+Username and Password are required.
+```
 
-Grant the \*\*IIS\_IUSRS\*\* group \*\*Read \& Execute\*\* permission on the project folder.
+**Incorrect credentials:**
 
+```
+Invalid username or password
+```
 
+The application does not display the entered password. Incorrect credentials produce a generic error message instead of identifying which credential was incorrect.
 
-\## Test Credentials
+---
 
+## Security Notes
 
+This application is intended for learning purposes only.
 
-\- \*\*Username:\*\* admin
+Hardcoding credentials is not recommended in production applications.
 
-\- \*\*Password:\*\* Password123
+A real authentication system should:
 
+- Store user information securely in a database.
+- Store passwords as salted hashes rather than plaintext.
+- Use HTTPS to protect data in transit.
+- Consider account lockout or rate limiting after repeated failed login attempts.
+- Use ASP.NET Identity or another appropriate authentication framework.
+- Log unexpected server-side errors securely without exposing sensitive information to users.
+- Use parameterized queries when accessing a database.
 
+---
 
-\## Security Note
+## Project Files
 
+The task submission contains the following files:
 
+- `Login.aspx` – Login form interface and validation controls.
+- `Login.aspx.cs` – C# server-side login logic.
+- `Web.config` – ASP.NET application configuration.
+- `README.md` – Setup instructions, validation details, and security notes.
 
-This project uses hardcoded credentials (`admin` / `Password123`) for demonstration purposes only.
+---
 
+## Conclusion
 
-
-In a production application:
-
-
-
-\- Credentials should be stored securely in a database.
-
-\- Passwords should be hashed and salted instead of stored as plain text.
-
-\- Proper logging and exception handling should be implemented.
-
-\- User input should be validated and sanitized.
-
-\- Parameterized queries should be used when accessing a database to help prevent SQL injection attacks.
-
+This project demonstrates an ASP.NET Web Forms login page with input validation, demo credential verification, password masking, and clear success and failure feedback. It also documents the IIS configuration required for local hosting.

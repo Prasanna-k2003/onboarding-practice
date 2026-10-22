@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,39 +14,31 @@ namespace LoginPage
         {
 
         }
-    protected void btnLogin_Click(object sender, EventArgs e)
+
+        protected void btnLogin_Click(object sender, EventArgs e)
         {
-            try
+            string username = txtUsername.Text.Trim();
+            string password = txtPassword.Text;
+
+            if (string.IsNullOrWhiteSpace(username) ||
+                string.IsNullOrWhiteSpace(password))
             {
-                if (string.IsNullOrWhiteSpace(txtUsername.Text) ||
-                    string.IsNullOrWhiteSpace(txtPassword.Text))
-                {
-                    lblMessage.ForeColor = System.Drawing.Color.Red;
-                    lblMessage.Text = "Username and Password are required.";
-                    return;
-                }
-
-                string username = Server.HtmlEncode(txtUsername.Text.Trim());
-                string password = Server.HtmlEncode(txtPassword.Text.Trim());
-
-               
-                if (username == "admin" && password == "Password123")
-                {
-                    lblMessage.ForeColor = System.Drawing.Color.Green;
-                    lblMessage.Text = "Login Successful.";
-                }
-                else
-                {
-                    lblMessage.ForeColor = System.Drawing.Color.Red;
-                    lblMessage.Text = "Invalid username or password.";
-                }
+                lblMessage.Text = "Username and Password are required.";
+                lblMessage.CssClass = "error";
+                return;
             }
-            catch (Exception)
-            {
-           
 
-                lblMessage.ForeColor = System.Drawing.Color.Red;
-                lblMessage.Text = "An unexpected error occurred. Please try again.";
+            if (username == "admin" && password == "Password123")
+            {
+                lblMessage.Text = "Login Successful";
+                lblMessage.CssClass = "success";
+                txtPassword.Text = "";
+            }
+            else
+            {
+                lblMessage.Text = "Invalid username or password";
+                lblMessage.CssClass = "error";
+                txtPassword.Text = "";
             }
         }
     }
